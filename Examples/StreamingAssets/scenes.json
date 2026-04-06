@@ -1,0 +1,24 @@
+{
+  "scenes": [
+    {
+      "id": "hub_town",
+      "sceneName": "HubTown",
+      "label": "Hub Town",
+      "loadMode": 0,
+      "audioTrackId": "town_theme",
+      "loadScreenId": "default",
+      "preload": false,
+      "tags": ["gameplay", "hub"]
+    },
+    {
+      "id": "chapter_01",
+      "sceneName": "Chapter01",
+      "label": "Chapter 1 — Angriff der grünen Spinnen",
+      "loadMode": 0,
+      "audioTrackId": "chapter01_theme",
+      "loadScreenId": "chapter_load",
+      "preload": false,
+      "tags": ["gameplay", "chapter"]
+    }
+  ]
+}
