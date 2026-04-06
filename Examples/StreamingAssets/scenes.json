@@ -13,7 +13,7 @@
     {
       "id": "chapter_01",
       "sceneName": "Chapter01",
-      "label": "Chapter 1 — Angriff der grünen Spinnen",
+      "label": "Chapter 1 - Angriff der gruenen Spinnen",
       "loadMode": 0,
       "audioTrackId": "chapter01_theme",
       "loadScreenId": "chapter_load",

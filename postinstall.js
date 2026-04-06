@@ -1,15 +1,15 @@
 // postinstall.js — SceneManager
-// Creates required StreamingAssets sub-folder and optionally copies example files.
+// Creates required folders and optionally copies example files.
 
-const fs   = require('fs');
-const path = require('path');
+const fs       = require('fs');
+const path     = require('path');
 const readline = require('readline');
 
 const assetsDir   = path.resolve(__dirname, '../');
 const examplesDir = path.resolve(__dirname, 'Examples');
 
 const folders = [
-  'StreamingAssets'
+  'StreamingAssets',
 ];
 
 folders.forEach(folder => {
@@ -40,14 +40,15 @@ function copyFileWithPrompt(src, dest, rl, cb) {
   }
 }
 
-function getAllFiles(dir, files = []) {
-  if (!fs.existsSync(dir)) return files;
-  fs.readdirSync(dir).forEach(entry => {
-    const full = path.join(dir, entry);
-    if (fs.statSync(full).isDirectory()) getAllFiles(full, files);
-    else files.push(full);
+function walkDir(dir, relBase = '') {
+  let results = [];
+  fs.readdirSync(dir, { withFileTypes: true }).forEach(entry => {
+    const relPath = path.join(relBase, entry.name);
+    const absPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) results = results.concat(walkDir(absPath, relPath));
+    else results.push({ relPath, absPath });
   });
-  return files;
+  return results;
 }
 
 function copyTemplates() {
@@ -55,7 +56,6 @@ function copyTemplates() {
     console.log('No Examples directory found. Skipping template copy.');
     return;
   }
-
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   rl.question('Copy example files from SceneManager/Examples to your Assets folders? (y/N): ', answer => {
     if (answer.trim().toLowerCase() !== 'y') {
@@ -63,25 +63,17 @@ function copyTemplates() {
       rl.close();
       return;
     }
-
-    const allFiles = getAllFiles(examplesDir);
-    let pending = allFiles.length;
-    if (pending === 0) { rl.close(); return; }
-
-    allFiles.forEach(src => {
-      const rel  = path.relative(examplesDir, src);
-      const dest = path.join(assetsDir, rel);
+    const files = walkDir(examplesDir);
+    let idx = 0;
+    function next() {
+      if (idx >= files.length) { console.log('Template copy complete.'); rl.close(); return; }
+      const { relPath, absPath } = files[idx++];
+      const dest    = path.join(assetsDir, relPath);
       const destDir = path.dirname(dest);
       if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
-
-      copyFileWithPrompt(src, dest, rl, () => {
-        pending--;
-        if (pending === 0) {
-          console.log('Template copy complete.');
-          rl.close();
-        }
-      });
-    });
+      copyFileWithPrompt(absPath, dest, rl, next);
+    }
+    next();
   });
 }
 
