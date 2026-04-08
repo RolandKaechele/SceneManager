@@ -50,13 +50,13 @@ namespace SceneManager.Runtime
         }
 
         private void HandleLoading(SceneTransitionData t)
-            => _eventManager?.FireEvent("scene.loading", t.toSceneId);
+            => _eventManager?.Fire("scene.loading", t.toSceneId);
 
         private void HandleLoaded(string id)
-            => _eventManager?.FireEvent("scene.loaded", id);
+            => _eventManager?.Fire("scene.loaded", id);
 
         private void HandleUnloaded(string id)
-            => _eventManager?.FireEvent("scene.unloaded", id);
+            => _eventManager?.Fire("scene.unloaded", id);
     }
 }
 #endif
