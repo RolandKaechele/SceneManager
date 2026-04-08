@@ -1,30 +1,30 @@
 {
-  "name": "com.rolandkaechele.scenemanager",
-  "displayName": "Scene Manager",
-  "version": "1.0.0",
-  "unity": "2022.3",
-  "description": "Manages scene loading, transitions, and organization. Async loading with fade transitions, scene history stack, JSON-authored definitions, and optional bridges for MapLoaderFramework, StateManager, AudioManager, EventManager, and DOTween Pro.",
-  "author": {
-    "name": "Roland Kaechele",
-    "url": "https://github.com/RolandKaechele/SceneManager"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/RolandKaechele/SceneManager.git"
-  },
-  "license": "MIT",
-  "keywords": [
-    "unity",
-    "scene",
-    "loading",
-    "transition",
-    "async",
-    "fade",
-    "modding",
-    "framework"
-  ],
-  "documentationUrl": "https://github.com/RolandKaechele/SceneManager#readme",
-  "scripts": {
-    "postinstall": "node postinstall.js"
-  }
+    "name":  "com.rolandkaechele.scenemanager",
+    "displayName":  "Scene Manager",
+    "version":  "1.0.0",
+    "unity":  "2022.3",
+    "description":  "Manages scene loading, transitions, and organization. Async loading with fade transitions, scene history stack, JSON-authored definitions, and optional bridges for MapLoaderFramework, StateManager, AudioManager, EventManager, and DOTween Pro.",
+    "author":  {
+                   "name":  "Roland Kaechele",
+                   "url":  "https://github.com/RolandKaechele/SceneManager"
+               },
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/RolandKaechele/SceneManager.git"
+                   },
+    "license":  "MIT",
+    "keywords":  [
+                     "unity",
+                     "scene",
+                     "loading",
+                     "transition",
+                     "async",
+                     "fade",
+                     "modding",
+                     "framework"
+                 ],
+    "documentationUrl":  "https://github.com/RolandKaechele/SceneManager#readme",
+    "scripts":  {
+                    "postinstall":  "node postinstall.js"
+                }
 }
