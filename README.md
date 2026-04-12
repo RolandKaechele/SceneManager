@@ -91,8 +91,9 @@ sm.UnloadScene("hud_overlay");
 
 Place one or more `.json` files in `StreamingAssets/scenes/`.
 All `*.json` files in the folder are loaded and merged by `id` at startup.
+Each file contains exactly one scene entry and is named by scene ID (e.g., `boot.json`, `title_screen.json`, `hub_westland.json`, `gallery.json`, `credits.json`).
 
-**Example:** `StreamingAssets/scenes/main.json`
+**Example:** `StreamingAssets/scenes/hub_town.json`
 
 ```json
 {
@@ -176,7 +177,7 @@ Open via **JSON Editors → Scene Manager** in the Unity menu bar, or via the **
 | ------ | ------ |
 | **Load** | Reads all `*.json` from `StreamingAssets/scenes/`; creates the folder if missing |
 | **Edit** | Add / remove / reorder entries using the Inspector list |
-| **Save** | Writes to `StreamingAssets/scenes/scenes.json` and calls `AssetDatabase.Refresh()` |
+| **Save** | Writes each entry as `<id>.json` to `StreamingAssets/scenes/`; entries without an `id` are skipped. Calls `AssetDatabase.Refresh()` |
 
 With **ODIN_INSPECTOR** active, the list uses Odin's enhanced drawer (drag-to-sort, collapsible entries).
 

@@ -1,0 +1,17 @@
+﻿{
+    "scenes":  [
+                   {
+                       "id":  "hub_town",
+                       "sceneName":  "HubTown",
+                       "label":  "Hub Town",
+                       "loadMode":  0,
+                       "audioTrackId":  "town_theme",
+                       "loadScreenId":  "default",
+                       "preload":  false,
+                       "tags":  [
+                                    "gameplay",
+                                    "hub"
+                                ]
+                   }
+               ]
+}
