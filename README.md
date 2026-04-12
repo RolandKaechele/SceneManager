@@ -165,6 +165,19 @@ Place in `StreamingAssets/scenes.json`:
 | `Examples/StreamingAssets/scenes.json` | Sample scene definitions |
 
 
+## Editor Tools
+
+Open via **JSON Editors → Scene Manager** in the Unity menu bar, or via the **Open JSON Editor** button in the SceneManager Inspector.
+
+| Action | Result |
+| ------ | ------ |
+| **Load** | Reads `StreamingAssets/scenes.json`; creates the file if missing |
+| **Edit** | Add / remove / reorder entries using the Inspector list |
+| **Save** | Writes back to `StreamingAssets/scenes.json` and calls `AssetDatabase.Refresh()` |
+
+With **ODIN_INSPECTOR** active, the list uses Odin's enhanced drawer (drag-to-sort, collapsible entries).
+
+
 ## Dependencies
 
 | Dependency | Required | Notes |

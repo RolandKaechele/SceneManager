@@ -18,6 +18,9 @@ namespace SceneManager.Editor
         {
             DrawDefaultInspector();
 
+            EditorGUILayout.Space(4);
+            if (GUILayout.Button("Open JSON Editor")) SceneJsonEditorWindow.ShowWindow();
+
             var mgr = (SceneManager.Runtime.SceneManager)target;
 
             EditorGUILayout.Space(8);
