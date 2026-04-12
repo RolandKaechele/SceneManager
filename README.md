@@ -11,7 +11,7 @@ Optionally integrates with [MapLoaderFramework](https://github.com/RolandKaechel
 - **Fade transitions** — configurable fade-out before load and fade-in after load via `CanvasGroup`
 - **Scene history** — maintains a navigation history stack for `GoBack()` support
 - **Single and Additive** — load scenes in `Single`, `Additive`, or `AdditiveActive` mode per definition
-- **JSON-authored definitions** — define scenes in `StreamingAssets/scenes.json`; no code required for new entries
+- **JSON-authored definitions** — define scenes in `StreamingAssets/scenes/`; no code required for new entries
 - **Modding support** — JSON entries are merged over Inspector definitions by id at runtime
 - **MapLoaderFramework integration** — `MapLoaderBridge` triggers scene transitions when chapters define a `sceneId` (activated via `SCENEMANAGER_MLF`)
 - **StateManager integration** — `StateManagerBridge` pushes/pops Loading state during transitions (activated via `SCENEMANAGER_STM`)
@@ -89,7 +89,10 @@ sm.UnloadScene("hud_overlay");
 
 ## Scene Definition Format (JSON)
 
-Place in `StreamingAssets/scenes.json`:
+Place one or more `.json` files in `StreamingAssets/scenes/`.
+All `*.json` files in the folder are loaded and merged by `id` at startup.
+
+**Example:** `StreamingAssets/scenes/main.json`
 
 ```json
 {
@@ -171,9 +174,9 @@ Open via **JSON Editors → Scene Manager** in the Unity menu bar, or via the **
 
 | Action | Result |
 | ------ | ------ |
-| **Load** | Reads `StreamingAssets/scenes.json`; creates the file if missing |
+| **Load** | Reads all `*.json` from `StreamingAssets/scenes/`; creates the folder if missing |
 | **Edit** | Add / remove / reorder entries using the Inspector list |
-| **Save** | Writes back to `StreamingAssets/scenes.json` and calls `AssetDatabase.Refresh()` |
+| **Save** | Writes to `StreamingAssets/scenes/scenes.json` and calls `AssetDatabase.Refresh()` |
 
 With **ODIN_INSPECTOR** active, the list uses Odin's enhanced drawer (drag-to-sort, collapsible entries).
 

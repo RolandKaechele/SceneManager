@@ -72,8 +72,8 @@ namespace SceneManager.Runtime
         [Tooltip("Merge additional scene definitions from StreamingAssets/<jsonPath> at startup.")]
         [SerializeField] private bool loadFromJson = false;
 
-        [Tooltip("Path relative to StreamingAssets/ (e.g. 'scenes.json').")]
-        [SerializeField] private string jsonPath = "scenes.json";
+        [Tooltip("Path relative to StreamingAssets/ (e.g. 'scenes/' or 'scenes.json').")]
+        [SerializeField] private string jsonPath = "scenes/";
 
         [Header("Debug")]
         [Tooltip("Log scene load/unload events to the Unity Console.")]
@@ -410,9 +410,24 @@ namespace SceneManager.Runtime
 
         private void LoadJsonDefinitions()
         {
-            string path = Path.Combine(Application.streamingAssetsPath, jsonPath);
-            if (!File.Exists(path)) return;
+            string fullPath = Path.Combine(Application.streamingAssetsPath, jsonPath);
+            if (Directory.Exists(fullPath))
+            {
+                foreach (var file in Directory.GetFiles(fullPath, "*.json", SearchOption.TopDirectoryOnly))
+                    MergeScenesFromFile(file);
+            }
+            else if (File.Exists(fullPath))
+            {
+                MergeScenesFromFile(fullPath);
+            }
+            else
+            {
+                Debug.LogWarning($"[SceneManager] JSON not found: {fullPath}");
+            }
+        }
 
+        private void MergeScenesFromFile(string path)
+        {
             try
             {
                 string json = File.ReadAllText(path);

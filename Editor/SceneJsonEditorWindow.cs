@@ -18,7 +18,8 @@ namespace SceneManager.Editor
     /// </summary>
     public class SceneJsonEditorWindow : EditorWindow
     {
-        private const string JsonFileName = "scenes.json";
+        private const string JsonFolderName   = "scenes";
+        private const string JsonSaveFileName = "scenes.json";
 
         private SceneDefinitionEditorBridge _bridge;
         private UnityEditor.Editor          _bridgeEditor;
@@ -62,7 +63,7 @@ namespace SceneManager.Editor
         {
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
             EditorGUILayout.LabelField(
-                Path.Combine("StreamingAssets", JsonFileName),
+                $"StreamingAssets/{JsonFolderName}/",
                 EditorStyles.miniLabel);
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Load", EditorStyles.toolbarButton, GUILayout.Width(50))) Load();
@@ -72,47 +73,46 @@ namespace SceneManager.Editor
 
         private void Load()
         {
-            var path = Path.Combine(Application.streamingAssetsPath, JsonFileName);
+            string folderPath = Path.Combine(Application.streamingAssetsPath, JsonFolderName);
             try
             {
-                if (!File.Exists(path))
+                var list = new List<SceneDefinition>();
+                if (Directory.Exists(folderPath))
                 {
-                    File.WriteAllText(path, JsonUtility.ToJson(new SceneDefinitionEditorWrapper(), true));
+                    foreach (var file in Directory.GetFiles(folderPath, "*.json", SearchOption.TopDirectoryOnly))
+                    {
+                        var w = JsonUtility.FromJson<SceneDefinitionEditorWrapper>(File.ReadAllText(file));
+                        if (w?.scenes != null) list.AddRange(w.scenes);
+                    }
+                }
+                else
+                {
+                    Directory.CreateDirectory(folderPath);
+                    File.WriteAllText(Path.Combine(folderPath, JsonSaveFileName), JsonUtility.ToJson(new SceneDefinitionEditorWrapper(), true));
                     AssetDatabase.Refresh();
                 }
-
-                var w = JsonUtility.FromJson<SceneDefinitionEditorWrapper>(File.ReadAllText(path));
-                _bridge.scenes = new List<SceneDefinition>(
-                    w.scenes ?? Array.Empty<SceneDefinition>());
-
+                _bridge.scenes = list;
                 if (_bridgeEditor != null) { DestroyImmediate(_bridgeEditor); _bridgeEditor = null; }
-
-                _status     = $"Loaded {_bridge.scenes.Count} scene definitions.";
+                _status = $"Loaded {list.Count} scenes from {JsonFolderName}/.";
                 _statusError = false;
             }
-            catch (Exception e)
-            {
-                _status     = $"Load error: {e.Message}";
-                _statusError = true;
-            }
+            catch (Exception e) { _status = $"Load error: {e.Message}"; _statusError = true; }
         }
 
         private void Save()
         {
             try
             {
-                var w    = new SceneDefinitionEditorWrapper { scenes = _bridge.scenes.ToArray() };
-                var path = Path.Combine(Application.streamingAssetsPath, JsonFileName);
+                string folderPath = Path.Combine(Application.streamingAssetsPath, JsonFolderName);
+                if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+                var w = new SceneDefinitionEditorWrapper { scenes = _bridge.scenes.ToArray() };
+                var path = Path.Combine(folderPath, JsonSaveFileName);
                 File.WriteAllText(path, JsonUtility.ToJson(w, true));
                 AssetDatabase.Refresh();
-                _status     = $"Saved {_bridge.scenes.Count} scenes to {JsonFileName}.";
+                _status = $"Saved {_bridge.scenes.Count} scenes to {JsonFolderName}/{JsonSaveFileName}.";
                 _statusError = false;
             }
-            catch (Exception e)
-            {
-                _status     = $"Save error: {e.Message}";
-                _statusError = true;
-            }
+            catch (Exception e) { _status = $"Save error: {e.Message}"; _statusError = true; }
         }
     }
 
