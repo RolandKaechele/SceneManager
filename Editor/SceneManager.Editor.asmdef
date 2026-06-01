@@ -2,7 +2,8 @@
     "name": "SceneManager.Editor",
     "rootNamespace": "SceneManager.Editor",
     "references": [
-        "SceneManager.Runtime"
+        "SceneManager.Runtime",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [
         "Editor"
